@@ -28,30 +28,15 @@
  * SUCH DAMAGE.
  */
 
-#include "ui.h"
-
-typedef struct _mode_game
+typedef struct _strat_ui
 {
-   struct _mode mode;
 
-   struct _strat_map map;
+} * strat_ui;
 
-   struct
-   {
-      vec2f start, end;
+void ui_init (strat_ctx, strat_ui);
+void ui_tick (strat_ctx, strat_ui);
+void ui_draw (strat_ctx, strat_ui);
+void ui_done (strat_ctx, strat_ui);
 
-   } selection;
-
-   struct _camera camera;
-
-   list (struct _unit, units);
-   list (unit, selected_units);
-
-   struct _strat_ui ui;
-
-} * mode_game;
-
-mode game_start (strat_ctx);
-void game_end (strat_ctx, mode mode);
 
 

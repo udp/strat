@@ -28,30 +28,42 @@
  * SUCH DAMAGE.
  */
 
-#include "ui.h"
+#include "common.h"
 
-typedef struct _mode_game
+void ui_init (strat_ctx ctx, strat_ui ui)
 {
-   struct _mode mode;
 
-   struct _strat_map map;
+}
 
-   struct
-   {
-      vec2f start, end;
+void ui_tick (strat_ctx ctx, strat_ui ui)
+{
 
-   } selection;
+}
 
-   struct _camera camera;
+void ui_draw (strat_ctx ctx, strat_ui ui)
+{
+   mode_game game = (mode_game) ctx->mode;
 
-   list (struct _unit, units);
-   list (unit, selected_units);
 
-   struct _strat_ui ui;
+   char status [128];
+   sprintf (status, "Camera: %f, %f", game->camera.pos.x, game->camera.pos.y);
+   text_draw (&ctx->ui_font, 0, 40, 0, 0, status, 0);
 
-} * mode_game;
+   vec2f m = screenspace_to_mapspace (&game->camera, ctx->cursor.x, ctx->cursor.y);
+   sprintf (status, "Mouse: %f, %f", m.x, m.y);
+	
+   text_draw (&ctx->ui_font, 0, 0, 0, 0, status, 0);
 
-mode game_start (strat_ctx);
-void game_end (strat_ctx, mode mode);
+
+   char selected [128];
+   sprintf (selected, "Selected: %d", (int) list_length (game->selected_units));
+   text_draw (&ctx->ui_font, 0, ctx->win_height - 40, 0, 0, selected, 0);
+
+}
+
+void ui_done (strat_ctx ctx, strat_ui ui)
+{
+
+}
 
 

@@ -78,7 +78,9 @@ static void tick (strat_ctx ctx, mode mode)
                if (!unit->selected)
                {
                   trace ("%s selected", unit->type->name);
+
                   unit->selected = true;
+                  list_push (game->selected_units, unit);
                }
             }
             else
@@ -86,7 +88,9 @@ static void tick (strat_ctx ctx, mode mode)
                if (unit->selected)
                {
                   trace ("%s deselected", unit->type->name);
+
                   unit->selected = false;
+                  list_remove (game->selected_units, unit);
                }
             }
          }
@@ -96,6 +100,8 @@ static void tick (strat_ctx ctx, mode mode)
    }
 
    camera_tick (ctx, &game->map, &game->camera);
+
+   ui_tick (ctx, &game->ui);
 }
 
 static void draw (strat_ctx ctx, mode mode)
@@ -108,15 +114,6 @@ static void draw (strat_ctx ctx, mode mode)
    {
       unit_draw (ctx, &game->camera, unit);
    }
-
-   char status[128];
-   sprintf (status, "Camera: %f, %f", game->camera.pos.x, game->camera.pos.y);
-   text_draw (&ctx->ui_font, 0, 40, 0, 0, status, 0);
-
-   vec2f m = screenspace_to_mapspace (&game->camera, ctx->cursor.x, ctx->cursor.y);
-   sprintf (status, "Mouse: %f, %f", m.x, m.y);
-	
-   text_draw (&ctx->ui_font, 0, 0, 0, 0, status, 0);
 
    if (game->selection.start.x != 0)
    {
@@ -155,11 +152,15 @@ static void draw (strat_ctx ctx, mode mode)
       glEnable (GL_TEXTURE_2D);
       glColor4f (1.0f, 1.0f, 1.0f, 1.0f);
    }
+
+   ui_draw (ctx, &game->ui);
 }
 
 mode game_start (strat_ctx ctx)
 {
    mode_game game = calloc (sizeof (*game), 1);
+
+   ui_init (ctx, &game->ui);
 
    game->mode.tick = tick;
    game->mode.draw = draw;
@@ -186,6 +187,8 @@ void game_end (strat_ctx ctx, mode mode)
    mode_game game = (mode_game) mode;
 
    unit_types_unload (ctx, &ctx->unit_types);
+
+   ui_done (ctx, &game->ui);
 
    free (game);
 }

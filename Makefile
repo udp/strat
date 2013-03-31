@@ -40,7 +40,8 @@ build/unit.o \
 build/matrix.o \
 build/camera.o \
 build/game.o \
-build/editor.o
+build/editor.o \
+build/game-ui.o
 
 OBJECTS += \
 build/ftgl-texture-font.o \
@@ -103,6 +104,9 @@ build/matrix.o: strat/matrix.c
 
 build/game.o: strat/mode/game/game.c
 	$(CC) $(CFLAGS) strat/mode/game/game.c -c -o $@
+
+build/game-ui.o: strat/mode/game/ui.c
+	$(CC) $(CFLAGS) strat/mode/game/ui.c -c -o $@
 
 build/editor.o: strat/mode/editor/editor.c
 	$(CC) $(CFLAGS) strat/mode/editor/editor.c -c -o $@
