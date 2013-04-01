@@ -41,7 +41,7 @@ bool font_init (strat_font font, const char * name, int size)
    char filename [strat_max_path];
    snprintf (filename, sizeof (filename), "game/font/%s.ttf", name);
 
-   if (! (font->font = texture_font_new (font->atlas, filename, 16)))
+   if (! (font->font = texture_font_new (font->atlas, filename, size)))
    {
       fprintf (stderr, "texture_font_new failed for %s\n", name);
       return false;
@@ -72,7 +72,7 @@ void text_draw (strat_font font,
    size_t length = strlen (s);
 
    glBindTexture (GL_TEXTURE_2D, font->atlas->id);
-   glColor4f (1, 1, 0, 1);
+   glColor4f (1, 1, 1, 1);
 
    size_t width = 0;
 
