@@ -32,6 +32,7 @@ typedef struct _mode
 {
    void (* tick) (strat_ctx, struct _mode *);
    void (* draw) (strat_ctx, struct _mode *);
+   void (* cleanup) (strat_ctx, struct _mode *);
 
 } * mode;
 

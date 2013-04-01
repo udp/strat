@@ -30,17 +30,9 @@
 
 #include "common.h"
 
-static void tick (strat_ctx ctx, mode mode)
-{
-   mode_editor editor = (mode_editor) mode;
-
-}
-
-static void draw (strat_ctx ctx, mode mode)
-{
-   mode_editor editor = (mode_editor) mode;
-
-}
+static void draw (strat_ctx ctx, mode mode);
+static void tick (strat_ctx ctx, mode mode);
+static void cleanup (strat_ctx ctx, mode mode);
 
 mode editor_start (strat_ctx ctx)
 {
@@ -49,13 +41,58 @@ mode editor_start (strat_ctx ctx)
    editor->mode.tick = tick;
    editor->mode.draw = draw;
 
+   map_init (ctx, &editor->map, "grass");
+   camera_center (ctx, &editor->camera, 0, 0);
+
    return (mode) editor;
 }
 
-void editor_end (strat_ctx ctx, mode mode)
+void cleanup (strat_ctx ctx, mode mode)
 {
    mode_editor editor = (mode_editor) mode;
 
    free (editor);
+}
+
+void tick (strat_ctx ctx, mode mode)
+{
+   mode_editor editor = (mode_editor) mode;
+
+   image_init (&editor->image_tile_hover, "game/ui/editor-tile-hover.png");
+
+   camera_tick (ctx, &editor->map, &editor->camera);
+}
+
+void draw (strat_ctx ctx, mode mode)
+{
+   mode_editor editor = (mode_editor) mode;
+
+
+   /* Draw the map */
+
+   map_draw (ctx, &editor->camera, &editor->map);
+
+
+   /* If we're hovering over a tile, draw the hover highlight image. */
+
+   vec2f cursor = screenspace_to_mapspace (&editor->camera,
+                                           ctx->cursor.x,
+                                           ctx->cursor.y);
+
+   if (cursor.x >= 0 &&
+       cursor.y >= 0 &&
+       cursor.x < editor->map.width &&
+       cursor.y < editor->map.height)
+   {
+      vec2f p = mapspace_to_screenspace (&editor->camera,
+                                         (int) cursor.x,
+                                         (int) cursor.y);
+
+      image_draw (&editor->image_tile_hover,
+                  p.x - (editor->map.tile_width / 2),
+                  p.y);
+   }
+
+
 }
 

@@ -32,6 +32,12 @@ typedef struct _mode_editor
 {
    struct _mode mode;
 
+   struct _strat_map map;
+
+   struct _camera camera;
+
+   struct _strat_image image_tile_hover;
+
 } * mode_editor;
 
 mode editor_start (strat_ctx);

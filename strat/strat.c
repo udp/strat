@@ -98,7 +98,7 @@ void strat_init_gfx (strat_ctx ctx)
 
 void strat_free (strat_ctx ctx)
 {
-   game_end (ctx, ctx->mode);
+   ctx->mode->cleanup (ctx, ctx->mode);
 
    free (ctx);
 }

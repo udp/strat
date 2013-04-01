@@ -30,6 +30,47 @@
 
 #include "common.h"
 
+static void draw (strat_ctx ctx, mode mode);
+static void tick (strat_ctx ctx, mode mode);
+static void cleanup (strat_ctx ctx, mode mode);
+
+mode game_start (strat_ctx ctx)
+{
+   mode_game game = calloc (sizeof (*game), 1);
+
+   ui_init (ctx, &game->ui);
+
+   game->mode.tick = tick;
+   game->mode.draw = draw;
+
+   unit_types_load (ctx, &ctx->unit_types);
+
+   map_init (ctx, &game->map, "grass");
+
+   list_each_elem (game->map.units, unit)
+   {
+      list_push (game->units, *unit);
+   }
+
+   /*camera_center (game, (game->map.width * game->map.tile_width) / 2,
+                       (game->map.height * game->map.tile_height) / 2);*/
+
+   camera_center (ctx, &game->camera, 0, 0);
+
+   return (mode) game;
+}
+
+void cleanup (strat_ctx ctx, mode mode)
+{
+   mode_game game = (mode_game) mode;
+
+   unit_types_unload (ctx, &ctx->unit_types);
+
+   ui_cleanup (ctx, &game->ui);
+
+   free (game);
+}
+
 static void tick (strat_ctx ctx, mode mode)
 {
    mode_game game = (mode_game) mode;
@@ -156,41 +197,6 @@ static void draw (strat_ctx ctx, mode mode)
    ui_draw (ctx, &game->ui);
 }
 
-mode game_start (strat_ctx ctx)
-{
-   mode_game game = calloc (sizeof (*game), 1);
 
-   ui_init (ctx, &game->ui);
-
-   game->mode.tick = tick;
-   game->mode.draw = draw;
-
-   unit_types_load (ctx, &ctx->unit_types);
-
-   map_init (ctx, &game->map, "grass");
-
-   list_each_elem (game->map.units, unit)
-   {
-      list_push (game->units, *unit);
-   }
-
-   /*camera_center (game, (game->map.width * game->map.tile_width) / 2,
-                       (game->map.height * game->map.tile_height) / 2);*/
-
-   camera_center (ctx, &game->camera, 0, 0);
-
-   return (mode) game;
-}
-
-void game_end (strat_ctx ctx, mode mode)
-{
-   mode_game game = (mode_game) mode;
-
-   unit_types_unload (ctx, &ctx->unit_types);
-
-   ui_cleanup (ctx, &game->ui);
-
-   free (game);
-}
 
 
