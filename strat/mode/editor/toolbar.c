@@ -59,9 +59,19 @@ void editor_toolbar_draw (strat_ctx ctx, editor_toolbar toolbar)
       int x = (int) editor->map_hover.x;
       int y = (int) editor->map_hover.y;
 
-      strat_tile tile = map_get_tile (&editor->map, x, y);
+      tile tile = editor->map.tiles [y * editor->map.width + x];
+      int elevation = editor->map.elevation [y * editor->map.width + x];
 
-      sprintf (status, "Tile (%d, %d): %s", x, y, tile->name);
+      char elevation_str [128];
+      *elevation_str = 0;
+
+      if (elevation > 0)
+         sprintf (elevation_str, " (elevation %d up)", abs (elevation));
+      else if (elevation < 0)
+         sprintf (elevation_str, " (elevation %d down)", abs (elevation));
+
+      sprintf (status, "Tile (%d, %d): %s%s", x, y, tile->name, elevation_str);
+
    }
 
    if (*status)

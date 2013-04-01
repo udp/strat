@@ -36,6 +36,8 @@ typedef struct _mode_game
 
    struct _strat_map map;
 
+   tile tiles;
+
    struct
    {
       vec2f start, end;

@@ -28,17 +28,29 @@
  * SUCH DAMAGE.
  */
 
-typedef struct _strat_tile
+typedef struct _tile
 {
-   struct _strat_image image;
+   UT_hash_handle hh;
+
+   struct _image image;
 
    char * name;
 
-} * strat_tile;
+   int flags;
 
-bool tile_init (strat_ctx, strat_tile, const char * name);
-void tile_cleanup (strat_tile);
+} * tile;
+
+bool tile_init (strat_ctx, tile, const char * name);
+void tile_load (tile);
+void tile_unload (tile);
+void tile_cleanup (tile);
+
+#define tile_flag_loaded  1
 
 
+/* Load/unload a uthash map of tiles (name keyptr -> tile object)
+ */
 
+bool tiles_load (strat_ctx ctx, tile * tiles);
+void tiles_unload (strat_ctx ctx, tile * tiles);
 

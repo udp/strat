@@ -38,7 +38,7 @@ typedef struct _unit_type
 
    struct
    {
-      struct _strat_image stand;
+      struct _image stand;
 
    } image;
 
@@ -54,6 +54,10 @@ void unit_type_unload (unit_type);
 void unit_type_cleanup (unit_type);
 
 #define unit_type_flag_loaded  1
+
+
+/* Load/unload a uthash map of unit types (name keyptr -> unit_type object)
+ */
 
 bool unit_types_load (strat_ctx ctx, unit_type * types);
 void unit_types_unload (strat_ctx ctx, unit_type * types);

@@ -35,18 +35,25 @@ typedef struct _strat_map
    int width, height;
 
    int tile_width, tile_height;
-   strat_tile * tiles;
 
-   struct _strat_tile default_tile;
+   /* 2D array of tiles, and 2D array of elevation numbers.  Index into either
+    * array with (y * width + x).
+    */
+
+   tile * tiles;
+   int8_t * elevation;
+
+   struct _tile default_tile;
 
    list (struct _unit, units);
 
 } * strat_map;
 
-bool map_init (strat_ctx, strat_map, unit_type unit_types, const char * name);
+bool map_init (strat_ctx, strat_map,
+               unit_type unit_types, tile tiles,
+               const char * name);
+
 void map_cleanup (strat_map);
 
 void map_draw (strat_ctx, camera, strat_map);
-
-strat_tile map_get_tile (strat_map, long x, long y);
 

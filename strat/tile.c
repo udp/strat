@@ -30,7 +30,7 @@
 
 #include "common.h"
 
-bool tile_init (strat_ctx ctx, strat_tile tile, const char * name)
+bool tile_init (strat_ctx ctx, tile tile, const char * name)
 {
    if (! (tile->name = strdup (name)))
       return false;
@@ -44,11 +44,70 @@ bool tile_init (strat_ctx ctx, strat_tile tile, const char * name)
    return true;
 }
 
-void tile_cleanup (strat_tile tile)
+void tile_cleanup (tile tile)
 {
    image_cleanup (&tile->image);
 
    free (tile->name);
+}
+
+bool tiles_load (strat_ctx ctx, tile * tiles)
+{
+   DIR * tile_dir = opendir ("game/tile");
+
+   if (!tile_dir)
+   {
+      trace ("Couldn't open tile dir");
+      return false;
+   }
+
+   struct dirent * entry;
+
+   while ((entry = readdir (tile_dir)))
+   {
+      if (entry->d_type != DT_REG)
+         continue;
+
+      if (*entry->d_name == '.')
+         continue;
+
+
+      /* Remove file extension */
+
+      char * ext = entry->d_name;
+
+      while (*ext != '.' && *ext != '\0')
+         ++ ext;
+
+      *ext = 0;
+      
+
+      tile tile = malloc (sizeof (*tile));
+      tile_init (ctx, tile, entry->d_name);
+
+      HASH_ADD_KEYPTR (hh,
+                       *tiles,
+                       tile->name,
+                       strlen (tile->name),
+                       tile);
+   }
+
+   closedir (tile_dir);
+
+   return true;
+}
+
+void tiles_unload (strat_ctx ctx, tile * tiles)
+{
+   tile tile, tmp;
+
+   HASH_ITER (hh, (*tiles), tile, tmp)
+   {
+      HASH_DEL (*tiles, tile);
+
+      tile_cleanup (tile);
+      free (tile);
+   }
 }
 
 

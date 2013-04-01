@@ -36,7 +36,7 @@ static GLuint load_texture (const char * filename,
                             int * out_texture_width,
                             int * out_texture_height);
 
-bool image_init (strat_image image, const char * filename)
+bool image_init (image image, const char * filename)
 {
    memset (image, 0, sizeof (*image));
 
@@ -59,14 +59,14 @@ bool image_init (strat_image image, const char * filename)
    return true;
 }
 
-void image_cleanup (strat_image image)
+void image_cleanup (image image)
 {
    glDeleteTextures (1, &image->texture);
 }
 
-strat_image image_new (strat_ctx ctx, const char * filename)
+image image_new (strat_ctx ctx, const char * filename)
 {
-   strat_image image = (strat_image) malloc (sizeof (*image));
+   image image = malloc (sizeof (*image));
 
    if (!image)
       return 0;
@@ -77,7 +77,7 @@ strat_image image_new (strat_ctx ctx, const char * filename)
    return image;
 }
 
-void image_delete (strat_image image)
+void image_delete (image image)
 {
    if (!image)
       return;
@@ -212,7 +212,7 @@ GLuint load_texture (const char * filename,
    return texture;
 }
 
-void image_draw (strat_image image, int x, int y)
+void image_draw (image image, int x, int y)
 {
    GLfloat vertices [] =
    {

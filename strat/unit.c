@@ -75,7 +75,7 @@ void unit_draw (strat_ctx ctx, camera camera, unit unit)
 {
    vec2f p = mapspace_to_screenspace (camera, unit->x, unit->y);
 
-   strat_image image = &unit->type->image.stand;
+   image image = &unit->type->image.stand;
 
    if (unit->selected)
    {

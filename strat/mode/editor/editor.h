@@ -37,14 +37,17 @@ typedef struct _mode_editor
    struct _mode mode;
 
    unit_type unit_types;
+
    struct _strat_map map;
+
+   tile tiles;
 
    struct _camera camera;
 
    struct _editor_toolbar toolbar;
 
    vec2f map_hover;
-   struct _strat_image image_tile_hover;
+   struct _image image_tile_hover;
 
    int state;
 

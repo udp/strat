@@ -28,7 +28,7 @@
  * SUCH DAMAGE.
  */
 
-typedef struct _strat_image
+typedef struct _image
 {
    GLuint texture;
 
@@ -39,14 +39,14 @@ typedef struct _strat_image
 
    GLfloat triangleTexCoords [8];
 
-} * strat_image;
+} * image;
 
-bool image_init (strat_image, const char * filename);
-void image_cleanup (strat_image);
+bool image_init (image, const char * filename);
+void image_cleanup (image);
 
-strat_image image_new (strat_ctx, const char * filename);
-void image_delete (strat_image);
+image image_new (strat_ctx, const char * filename);
+void image_delete (image);
 
-void image_draw (strat_image image, int x, int y);
+void image_draw (image image, int x, int y);
 
 

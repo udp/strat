@@ -43,8 +43,9 @@ mode editor_start (strat_ctx ctx)
    editor->mode.cleanup = cleanup;
 
    unit_types_load (ctx, &editor->unit_types);
+   tiles_load (ctx, &editor->tiles);
 
-   map_init (ctx, &editor->map, editor->unit_types, "grass");
+   map_init (ctx, &editor->map, editor->unit_types, editor->tiles, "grass");
    camera_center (ctx, &editor->camera, 0, 0);
 
    editor_toolbar_init (ctx, &editor->toolbar);
@@ -59,6 +60,7 @@ void cleanup (strat_ctx ctx, mode mode)
    editor_toolbar_cleanup (ctx, &editor->toolbar);
 
    unit_types_unload (ctx, &editor->unit_types);
+   tiles_unload (ctx, &editor->tiles);
 
    free (editor);
 }

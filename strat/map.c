@@ -33,6 +33,7 @@
 bool map_init (strat_ctx ctx,
                strat_map map,
                unit_type unit_types,
+               tile tiles,
                const char * name)
 {
    char filename [strat_max_path];
@@ -50,11 +51,8 @@ bool map_init (strat_ctx ctx,
 
    /** Tiles **/
 
-   if (! (map->tiles = (strat_tile *) malloc (sizeof (strat_tile) * map->width * map->height)))
-   {
-      trace ("Error allocating memory for map %s", name);
-      return false;
-   }
+   map->tiles = (tile *) malloc (sizeof (tile) * map->width * map->height);
+   map->elevation = (int8_t *) malloc (sizeof (int8_t) * map->width * map->height);
 
    if (!tile_init (ctx, &map->default_tile, sut_json_string (map->json, "defaultTile", "empty")))
    {
@@ -65,11 +63,52 @@ bool map_init (strat_ctx ctx,
    map->tile_width = map->default_tile.image.width;
    map->tile_height = map->default_tile.image.height;
 
-   for (long x = 0; x < map->width; ++ x)
+   json_value * tiles_json = sut_json_value (map->json, "tiles");
+
+   if (tiles_json->type != json_array)
+      tiles_json = 0;
+
+   for (long y = 0; y < map->height; ++ y)
    {
-      for (long y = 0; y < map->height; ++ y)
+      json_value * row_json = tiles_json ? tiles_json->u.array.values [y] : 0;
+
+      if (row_json->type != json_array)
+         row_json = 0;
+
+      for (long x = 0; x < map->width; ++ x)
       {
-         map->tiles [y * map->width + x] = &map->default_tile;
+         tile tile = 0;
+         int8_t elevation = 0;
+
+         if (row_json && row_json->u.array.length > x)
+         {
+            json_value * tile_json = row_json->u.array.values [x];
+
+            if (tile_json->type == json_string)
+            {
+               const char * elevation_str = strchr (tile_json->u.string.ptr, ':');
+
+               size_t name_length;
+              
+               if (elevation_str)
+               {
+                  name_length = (elevation_str - tile_json->u.string.ptr);
+                  elevation = atoi (elevation_str + 1);
+               }
+               else
+               {
+                  name_length = tile_json->u.string.length;
+               }
+
+               HASH_FIND (hh, tiles, tile_json->u.string.ptr, name_length, tile);
+            }
+         }
+         
+         if (!tile)
+            tile = &map->default_tile;
+
+         map->tiles [y * map->width + x] = tile;
+         map->elevation [y * map->width + x] = elevation;
       }
    }
 
@@ -111,7 +150,8 @@ void map_draw (strat_ctx ctx, camera camera, strat_map map)
    {
       for (int j = map->width - 1; j >= 0; -- j)
       {
-         strat_tile tile = map_get_tile (map, j, i);
+         tile tile = map->tiles [i * map->width + j];
+         int8_t elevation = map->elevation [i * map->width + j];
 
          vec2f p = mapspace_to_screenspace (camera, i, j);
 
@@ -121,10 +161,5 @@ void map_draw (strat_ctx ctx, camera camera, strat_map map)
          image_draw (&tile->image, p.x, p.y);
       }
    }
-}
-
-strat_tile map_get_tile (strat_map map, long x, long y)
-{
-   return map->tiles [y * map->width + x];
 }
 
