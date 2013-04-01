@@ -30,7 +30,7 @@
 
 #include "common.h"
 
-bool unit_init_json (unit_type * types, unit unit, json_value * json)
+bool unit_init_json (unit_type types, unit unit, json_value * json)
 {
    if (json->type != json_object)
       return false;
@@ -38,7 +38,7 @@ bool unit_init_json (unit_type * types, unit unit, json_value * json)
    const char * type_id = sut_json_string (json, "type", "");
 
    unit_type type = 0;
-   HASH_FIND (hh, *types, type_id, strlen (type_id), type);
+   HASH_FIND (hh, types, type_id, strlen (type_id), type);
 
    if (!type)
    {
@@ -59,7 +59,7 @@ bool unit_init_json (unit_type * types, unit unit, json_value * json)
    return true;
 }
 
-bool unit_init (unit_type * types, unit unit, unit_type type)
+bool unit_init (unit_type types, unit unit, unit_type type)
 {
    assert (false);
 

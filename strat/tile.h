@@ -32,6 +32,8 @@ typedef struct _strat_tile
 {
    struct _strat_image image;
 
+   char * name;
+
 } * strat_tile;
 
 bool tile_init (strat_ctx, strat_tile, const char * name);

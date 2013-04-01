@@ -40,8 +40,9 @@ build/unit.o \
 build/matrix.o \
 build/camera.o \
 build/game.o \
+build/game-ui.o \
 build/editor.o \
-build/game-ui.o
+build/editor-toolbar.o
 
 OBJECTS += \
 build/ftgl-texture-font.o \
@@ -110,6 +111,9 @@ build/game-ui.o: strat/mode/game/ui.c
 
 build/editor.o: strat/mode/editor/editor.c
 	$(CC) $(CFLAGS) strat/mode/editor/editor.c -c -o $@
+
+build/editor-toolbar.o: strat/mode/editor/toolbar.c
+	$(CC) $(CFLAGS) strat/mode/editor/toolbar.c -c -o $@
 
 
 ## glfw

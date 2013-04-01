@@ -40,9 +40,14 @@ mode editor_start (strat_ctx ctx)
 
    editor->mode.tick = tick;
    editor->mode.draw = draw;
+   editor->mode.cleanup = cleanup;
 
-   map_init (ctx, &editor->map, "grass");
+   unit_types_load (ctx, &editor->unit_types);
+
+   map_init (ctx, &editor->map, editor->unit_types, "grass");
    camera_center (ctx, &editor->camera, 0, 0);
+
+   editor_toolbar_init (ctx, &editor->toolbar);
 
    return (mode) editor;
 }
@@ -50,6 +55,10 @@ mode editor_start (strat_ctx ctx)
 void cleanup (strat_ctx ctx, mode mode)
 {
    mode_editor editor = (mode_editor) mode;
+
+   editor_toolbar_cleanup (ctx, &editor->toolbar);
+
+   unit_types_unload (ctx, &editor->unit_types);
 
    free (editor);
 }
@@ -61,6 +70,31 @@ void tick (strat_ctx ctx, mode mode)
    image_init (&editor->image_tile_hover, "game/ui/editor-tile-hover.png");
 
    camera_tick (ctx, &editor->map, &editor->camera);
+
+
+   /* Find out which tile we're hovering over, if any.  The
+    * editor_state_hovering flag is set if we're hovering over a tile inside
+    * the map (used by the toolbar and when drawing).
+    */
+
+   editor->map_hover = screenspace_to_mapspace (&editor->camera,
+                                                ctx->cursor.x,
+                                                ctx->cursor.y);
+
+   if (editor->map_hover.x >= 0 &&
+       editor->map_hover.y >= 0 &&
+       editor->map_hover.x < editor->map.width &&
+       editor->map_hover.y < editor->map.height)
+   {
+      editor->state |= editor_state_hovering;
+   }
+   else
+   {
+      editor->state &= ~ editor_state_hovering;
+   }
+
+
+   editor_toolbar_tick (ctx, &editor->toolbar);
 }
 
 void draw (strat_ctx ctx, mode mode)
@@ -75,18 +109,11 @@ void draw (strat_ctx ctx, mode mode)
 
    /* If we're hovering over a tile, draw the hover highlight image. */
 
-   vec2f cursor = screenspace_to_mapspace (&editor->camera,
-                                           ctx->cursor.x,
-                                           ctx->cursor.y);
-
-   if (cursor.x >= 0 &&
-       cursor.y >= 0 &&
-       cursor.x < editor->map.width &&
-       cursor.y < editor->map.height)
+   if (editor->state & editor_state_hovering)
    {
       vec2f p = mapspace_to_screenspace (&editor->camera,
-                                         (int) cursor.x,
-                                         (int) cursor.y);
+                                         (int) editor->map_hover.x,
+                                         (int) editor->map_hover.y);
 
       image_draw (&editor->image_tile_hover,
                   p.x - (editor->map.tile_width / 2),
@@ -94,5 +121,8 @@ void draw (strat_ctx ctx, mode mode)
    }
 
 
+   /* Draw the toolbar */
+
+   editor_toolbar_draw (ctx, &editor->toolbar);
 }
 

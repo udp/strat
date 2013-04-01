@@ -95,8 +95,6 @@ struct _strat_ctx
 
    mode mode;
 
-   unit_type unit_types;
-
    bool is_editor;
 };
 

@@ -38,8 +38,8 @@ typedef struct _unit
 
 } * unit;
 
-bool unit_init (unit_type * types, unit, unit_type);
-bool unit_init_json (unit_type * types, unit, json_value *);
+bool unit_init (unit_type types, unit, unit_type);
+bool unit_init_json (unit_type types, unit, json_value *);
 
 void unit_cleanup (unit);
 

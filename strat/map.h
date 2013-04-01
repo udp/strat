@@ -43,8 +43,10 @@ typedef struct _strat_map
 
 } * strat_map;
 
-bool map_init (strat_ctx, strat_map, const char * name);
+bool map_init (strat_ctx, strat_map, unit_type unit_types, const char * name);
 void map_cleanup (strat_map);
 
 void map_draw (strat_ctx, camera, strat_map);
+
+strat_tile map_get_tile (strat_map, long x, long y);
 

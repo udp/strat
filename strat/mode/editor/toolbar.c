@@ -30,25 +30,42 @@
 
 #include "common.h"
 
-bool tile_init (strat_ctx ctx, strat_tile tile, const char * name)
+void editor_toolbar_init (strat_ctx ctx, editor_toolbar toolbar)
 {
-   if (! (tile->name = strdup (name)))
-      return false;
-
-   char filename [strat_max_path];
-   snprintf (filename, sizeof (filename), "game/tile/%s.png", name);
-
-   if (!image_init (&tile->image, filename))
-      return false;
-
-   return true;
+   font_init (&toolbar->font, "Vera", 12);
 }
 
-void tile_cleanup (strat_tile tile)
+void editor_toolbar_cleanup (strat_ctx ctx, editor_toolbar toolbar)
 {
-   image_cleanup (&tile->image);
+   font_cleanup (&toolbar->font);
+}
 
-   free (tile->name);
+void editor_toolbar_tick (strat_ctx ctx, editor_toolbar toolbar)
+{
+
+}
+
+void editor_toolbar_draw (strat_ctx ctx, editor_toolbar toolbar)
+{
+   mode_editor editor = (mode_editor) ctx->mode;
+
+   char status [128];
+   *status = 0;
+
+   /* Hovering over a tile?  Set status to the coordinates and tile type. */
+
+   if (editor->state & editor_state_hovering)
+   {
+      int x = (int) editor->map_hover.x;
+      int y = (int) editor->map_hover.y;
+
+      strat_tile tile = map_get_tile (&editor->map, x, y);
+
+      sprintf (status, "Tile (%d, %d): %s", x, y, tile->name);
+   }
+
+   if (*status)
+      text_draw (&toolbar->font, 0, 0, 128, 64, status, 0);
 }
 
 

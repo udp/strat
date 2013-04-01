@@ -42,10 +42,11 @@ mode game_start (strat_ctx ctx)
 
    game->mode.tick = tick;
    game->mode.draw = draw;
+   game->mode.cleanup = cleanup;
 
-   unit_types_load (ctx, &ctx->unit_types);
+   unit_types_load (ctx, &game->unit_types);
 
-   map_init (ctx, &game->map, "grass");
+   map_init (ctx, &game->map, game->unit_types, "grass");
 
    list_each_elem (game->map.units, unit)
    {
@@ -64,7 +65,7 @@ void cleanup (strat_ctx ctx, mode mode)
 {
    mode_game game = (mode_game) mode;
 
-   unit_types_unload (ctx, &ctx->unit_types);
+   unit_types_unload (ctx, &game->unit_types);
 
    ui_cleanup (ctx, &game->ui);
 

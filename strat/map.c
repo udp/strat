@@ -30,7 +30,10 @@
 
 #include "common.h"
 
-bool map_init (strat_ctx ctx, strat_map map, const char * name)
+bool map_init (strat_ctx ctx,
+               strat_map map,
+               unit_type unit_types,
+               const char * name)
 {
    char filename [strat_max_path];
    snprintf (filename, sizeof (filename), "game/map/%s.json", name);
@@ -80,7 +83,7 @@ bool map_init (strat_ctx ctx, strat_map map, const char * name)
       for (size_t i = 0; i < units->u.array.length; ++ i)
       {
          struct _unit unit;
-         unit_init_json (&ctx->unit_types, &unit, units->u.array.values [i]);
+         unit_init_json (unit_types, &unit, units->u.array.values [i]);
          list_push (map->units, unit);
       }
    }
@@ -108,7 +111,7 @@ void map_draw (strat_ctx ctx, camera camera, strat_map map)
    {
       for (int j = map->width - 1; j >= 0; -- j)
       {
-         strat_tile tile = map->tiles [i * map->width + j];
+         strat_tile tile = map_get_tile (map, j, i);
 
          vec2f p = mapspace_to_screenspace (camera, i, j);
 
@@ -116,19 +119,12 @@ void map_draw (strat_ctx ctx, camera camera, strat_map map)
          p.x -= map->tile_width/2;
 		  
          image_draw (&tile->image, p.x, p.y);
-
-         char desc[128];
-         sprintf(desc, "%d: %d, %d", num_drawn ++, i, j);
-
-         text_draw (&ctx->font,
-                    p.x,
-                    p.y,
-                    tile->image.width,
-                    tile->image.height,
-                    desc,
-                    text_draw_center);
       }
    }
 }
 
+strat_tile map_get_tile (strat_map map, long x, long y)
+{
+   return map->tiles [y * map->width + x];
+}
 

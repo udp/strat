@@ -28,27 +28,17 @@
  * SUCH DAMAGE.
  */
 
-#include "common.h"
-
-bool tile_init (strat_ctx ctx, strat_tile tile, const char * name)
+typedef struct _editor_toolbar
 {
-   if (! (tile->name = strdup (name)))
-      return false;
+   struct _strat_font font;
 
-   char filename [strat_max_path];
-   snprintf (filename, sizeof (filename), "game/tile/%s.png", name);
+} * editor_toolbar;
 
-   if (!image_init (&tile->image, filename))
-      return false;
+void editor_toolbar_init (strat_ctx, editor_toolbar);
+void editor_toolbar_cleanup (strat_ctx, editor_toolbar);
 
-   return true;
-}
+void editor_toolbar_tick (strat_ctx, editor_toolbar);
+void editor_toolbar_draw (strat_ctx, editor_toolbar);
 
-void tile_cleanup (strat_tile tile)
-{
-   image_cleanup (&tile->image);
-
-   free (tile->name);
-}
 
 

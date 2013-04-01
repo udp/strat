@@ -44,6 +44,8 @@ typedef struct _mode_game
 
    struct _camera camera;
 
+   unit_type unit_types;
+
    list (struct _unit, units);
    list (unit, selected_units);
 

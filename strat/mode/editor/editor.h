@@ -28,15 +28,25 @@
  * SUCH DAMAGE.
  */
 
+#include "toolbar.h"
+
+#define editor_state_hovering  1
+
 typedef struct _mode_editor
 {
    struct _mode mode;
 
+   unit_type unit_types;
    struct _strat_map map;
 
    struct _camera camera;
 
+   struct _editor_toolbar toolbar;
+
+   vec2f map_hover;
    struct _strat_image image_tile_hover;
+
+   int state;
 
 } * mode_editor;
 
