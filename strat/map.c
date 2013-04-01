@@ -120,7 +120,7 @@ void map_draw (strat_ctx ctx, camera camera, strat_map map)
          char desc[128];
          sprintf(desc, "%d: %d, %d", num_drawn ++, i, j);
 
-         text_draw (&ctx->ui_font,
+         text_draw (&ctx->font,
                     p.x,
                     p.y,
                     tile->image.width,

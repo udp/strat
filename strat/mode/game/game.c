@@ -188,7 +188,7 @@ void game_end (strat_ctx ctx, mode mode)
 
    unit_types_unload (ctx, &ctx->unit_types);
 
-   ui_done (ctx, &game->ui);
+   ui_cleanup (ctx, &game->ui);
 
    free (game);
 }

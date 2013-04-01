@@ -30,13 +30,15 @@
 
 typedef struct _strat_ui
 {
+   struct _strat_font font;
 
 } * strat_ui;
 
 void ui_init (strat_ctx, strat_ui);
+void ui_cleanup (strat_ctx, strat_ui);
+
 void ui_tick (strat_ctx, strat_ui);
 void ui_draw (strat_ctx, strat_ui);
-void ui_done (strat_ctx, strat_ui);
 
 
 

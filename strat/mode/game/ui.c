@@ -32,7 +32,12 @@
 
 void ui_init (strat_ctx ctx, strat_ui ui)
 {
+   font_init (&ui->font, "Vera", 12);
+}
 
+void ui_cleanup (strat_ctx ctx, strat_ui ui)
+{
+   font_cleanup (&ui->font);
 }
 
 void ui_tick (strat_ctx ctx, strat_ui ui)
@@ -47,22 +52,17 @@ void ui_draw (strat_ctx ctx, strat_ui ui)
 
    char status [128];
    sprintf (status, "Camera: %f, %f", game->camera.pos.x, game->camera.pos.y);
-   text_draw (&ctx->ui_font, 0, 40, 0, 0, status, 0);
+   text_draw (&ui->font, 0, 40, 0, 0, status, 0);
 
    vec2f m = screenspace_to_mapspace (&game->camera, ctx->cursor.x, ctx->cursor.y);
    sprintf (status, "Mouse: %f, %f", m.x, m.y);
 	
-   text_draw (&ctx->ui_font, 0, 0, 0, 0, status, 0);
+   text_draw (&ui->font, 0, 0, 0, 0, status, 0);
 
 
    char selected [128];
    sprintf (selected, "Selected: %d", (int) list_length (game->selected_units));
-   text_draw (&ctx->ui_font, 0, ctx->win_height - 40, 0, 0, selected, 0);
-
-}
-
-void ui_done (strat_ctx ctx, strat_ui ui)
-{
+   text_draw (&ui->font, 0, ctx->win_height - 40, 0, 0, selected, 0);
 
 }
 
