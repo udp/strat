@@ -64,29 +64,6 @@ void image_cleanup (image image)
    glDeleteTextures (1, &image->texture);
 }
 
-image image_new (strat_ctx ctx, const char * filename)
-{
-   image image = malloc (sizeof (*image));
-
-   if (!image)
-      return 0;
-
-   if (!image_init (image, filename))
-      return 0;
-
-   return image;
-}
-
-void image_delete (image image)
-{
-   if (!image)
-      return;
-
-   image_cleanup (image);
-
-   free (image);
-}
-
 GLuint load_texture (const char * filename,
                      int * out_image_width,
                      int * out_image_height,
@@ -214,6 +191,9 @@ GLuint load_texture (const char * filename,
 
 void image_draw (image image, int x, int y)
 {
+   x -= image->offset_x;
+   y -= image->offset_y;
+
    GLfloat vertices [] =
    {
       x,                  y,

@@ -30,22 +30,22 @@
 
 #include "common.h"
 
-void ui_init (strat_ctx ctx, strat_ui ui)
+void ui_init (strat_ctx ctx, game_ui ui)
 {
    font_init (&ui->font, "Vera", 12);
 }
 
-void ui_cleanup (strat_ctx ctx, strat_ui ui)
+void ui_cleanup (strat_ctx ctx, game_ui ui)
 {
    font_cleanup (&ui->font);
 }
 
-void ui_tick (strat_ctx ctx, strat_ui ui)
+void ui_tick (strat_ctx ctx, game_ui ui)
 {
 
 }
 
-void ui_draw (strat_ctx ctx, strat_ui ui)
+void ui_draw (strat_ctx ctx, game_ui ui)
 {
    mode_game game = (mode_game) ctx->mode;
 

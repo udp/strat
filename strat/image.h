@@ -35,7 +35,9 @@ typedef struct _image
    int width,
        height,
        texture_width,
-       texture_height;
+       texture_height,
+       offset_x,
+       offset_y;
 
    GLfloat triangleTexCoords [8];
 
@@ -44,9 +46,7 @@ typedef struct _image
 bool image_init (image, const char * filename);
 void image_cleanup (image);
 
-image image_new (strat_ctx, const char * filename);
-void image_delete (image);
-
 void image_draw (image image, int x, int y);
+
 
 

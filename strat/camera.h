@@ -41,5 +41,5 @@ void camera_center (strat_ctx, camera, int x, int y);
 vec2f mapspace_to_screenspace (camera, int x, int y);
 vec2f screenspace_to_mapspace (camera, int x, int y);
 
-void camera_tick (strat_ctx ctx, strat_map map, camera camera);
+void camera_tick (strat_ctx ctx, map map, camera camera);
 

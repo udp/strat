@@ -38,7 +38,7 @@ typedef struct _mode_editor
 
    unit_type unit_types;
 
-   struct _strat_map map;
+   struct _map map;
 
    tile tiles;
 

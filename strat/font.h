@@ -28,17 +28,17 @@
  * SUCH DAMAGE.
  */
 
-typedef struct _strat_font
+typedef struct _font
 {
     texture_atlas_t * atlas;
     texture_font_t * font;
 
-} * strat_font;
+} * font;
 
-bool font_init (strat_font, const char * name, int size);
-void font_cleanup (strat_font);
+bool font_init (font, const char * name, int size);
+void font_cleanup (font);
 
-void text_draw (strat_font font,
+void text_draw (font font,
                 int x,
                 int y,
                 int box_width,

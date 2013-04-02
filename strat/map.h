@@ -28,7 +28,7 @@
  * SUCH DAMAGE.
  */
 
-typedef struct _strat_map
+typedef struct _map
 {
    json_value * json;
 
@@ -47,13 +47,13 @@ typedef struct _strat_map
 
    list (struct _unit, units);
 
-} * strat_map;
+} * map;
 
-bool map_init (strat_ctx, strat_map,
+bool map_init (strat_ctx, map,
                unit_type unit_types, tile tiles,
                const char * name);
 
-void map_cleanup (strat_map);
+void map_cleanup (map);
 
-void map_draw (strat_ctx, camera, strat_map);
+void map_draw (strat_ctx, camera, map);
 

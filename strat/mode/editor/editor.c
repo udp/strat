@@ -42,6 +42,9 @@ mode editor_start (strat_ctx ctx)
    editor->mode.draw = draw;
    editor->mode.cleanup = cleanup;
 
+   image_init (&editor->image_tile_hover, "game/ui/editor-tile-hover.png");
+   editor->image_tile_hover.offset_x = (editor->image_tile_hover.width / 2);
+
    unit_types_load (ctx, &editor->unit_types);
    tiles_load (ctx, &editor->tiles);
 
@@ -68,8 +71,6 @@ void cleanup (strat_ctx ctx, mode mode)
 void tick (strat_ctx ctx, mode mode)
 {
    mode_editor editor = (mode_editor) mode;
-
-   image_init (&editor->image_tile_hover, "game/ui/editor-tile-hover.png");
 
    camera_tick (ctx, &editor->map, &editor->camera);
 
@@ -117,9 +118,7 @@ void draw (strat_ctx ctx, mode mode)
                                          (int) editor->map_hover.x,
                                          (int) editor->map_hover.y);
 
-      image_draw (&editor->image_tile_hover,
-                  p.x - (editor->map.tile_width / 2),
-                  p.y);
+      image_draw (&editor->image_tile_hover, p.x, p.y);
    }
 
 

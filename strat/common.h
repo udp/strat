@@ -88,7 +88,7 @@ struct _strat_ctx
 
    vec2i cursor;
 
-   struct _strat_font font;
+   struct _font font;
 
    const char * game_title;
    int tick_rate;

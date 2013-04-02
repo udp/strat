@@ -30,7 +30,7 @@
 
 typedef struct _editor_toolbar
 {
-   struct _strat_font font;
+   struct _font font;
 
 } * editor_toolbar;
 

@@ -31,7 +31,7 @@
 #include "common.h"
 
 bool map_init (strat_ctx ctx,
-               strat_map map,
+               map map,
                unit_type unit_types,
                tile tiles,
                const char * name)
@@ -137,12 +137,12 @@ bool map_init (strat_ctx ctx,
    return map;
 }
 
-void map_cleanup (strat_map map)
+void map_cleanup (map map)
 {
    tile_cleanup (&map->default_tile);
 }
 
-void map_draw (strat_ctx ctx, camera camera, strat_map map)
+void map_draw (strat_ctx ctx, camera camera, map map)
 {
    int num_drawn = 0;
 
@@ -154,9 +154,6 @@ void map_draw (strat_ctx ctx, camera camera, strat_map map)
          int8_t elevation = map->elevation [i * map->width + j];
 
          vec2f p = mapspace_to_screenspace (camera, i, j);
-
-         //Adjust for tile hotspot
-         p.x -= map->tile_width/2;
 		  
          image_draw (&tile->image, p.x, p.y);
       }

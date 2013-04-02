@@ -30,7 +30,7 @@
 
 #include "common.h"
 
-bool font_init (strat_font font, const char * name, int size)
+bool font_init (font font, const char * name, int size)
 {
    if (! (font->atlas = texture_atlas_new (512, 512, 1)))
    {
@@ -55,13 +55,13 @@ bool font_init (strat_font font, const char * name, int size)
    return true;
 }
 
-void font_cleanup (strat_font font)
+void font_cleanup (font font)
 {
    texture_font_delete (font->font);
    texture_atlas_delete (font->atlas);
 }
 
-void text_draw (strat_font font,
+void text_draw (font font,
                 int x,
                 int y,
                 int box_width,

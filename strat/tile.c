@@ -41,6 +41,8 @@ bool tile_init (strat_ctx ctx, tile tile, const char * name)
    if (!image_init (&tile->image, filename))
       return false;
 
+   tile->image.offset_x = (tile->image.width / 2);
+
    return true;
 }
 

@@ -28,17 +28,17 @@
  * SUCH DAMAGE.
  */
 
-typedef struct _strat_ui
+typedef struct _game_ui
 {
-   struct _strat_font font;
+   struct _font font;
 
-} * strat_ui;
+} * game_ui;
 
-void ui_init (strat_ctx, strat_ui);
-void ui_cleanup (strat_ctx, strat_ui);
+void ui_init (strat_ctx, game_ui);
+void ui_cleanup (strat_ctx, game_ui);
 
-void ui_tick (strat_ctx, strat_ui);
-void ui_draw (strat_ctx, strat_ui);
+void ui_tick (strat_ctx, game_ui);
+void ui_draw (strat_ctx, game_ui);
 
 
 

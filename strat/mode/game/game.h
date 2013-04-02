@@ -34,7 +34,7 @@ typedef struct _mode_game
 {
    struct _mode mode;
 
-   struct _strat_map map;
+   struct _map map;
 
    tile tiles;
 
@@ -51,7 +51,7 @@ typedef struct _mode_game
    list (struct _unit, units);
    list (unit, selected_units);
 
-   struct _strat_ui ui;
+   struct _game_ui ui;
 
 } * mode_game;
 

@@ -95,7 +95,7 @@ void handle_accel (float * accel, int direction)
    }
 }
 
-void camera_tick (strat_ctx ctx, strat_map map, camera camera)
+void camera_tick (strat_ctx ctx, map map, camera camera)
 {
    int x_direction = 0;
 
