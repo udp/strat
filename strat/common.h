@@ -69,6 +69,7 @@ typedef struct _camera * camera;
 #include "font.h"
 #include "unit-type.h"
 #include "unit.h"
+#include "map-section.h"
 #include "map.h"
 #include "camera.h"
 

@@ -32,7 +32,7 @@
 
 void map_section_update (map_section section)
 {
-    Vec2f * vertices = (Vec2f *) alloca (map_section_size * map_section_size);
+   vec2f * vertices = (vec2f *) alloca (map_section_size * map_section_size);
 
 
 
