@@ -84,6 +84,8 @@ void strat_init_gfx (strat_ctx ctx)
    glEnableClientState (GL_VERTEX_ARRAY);
    glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 
+   shader_init (&ctx->shader.ui, "ui");
+
    font_init (&ctx->font, "Vera", 9);
 
    if (ctx->is_editor)

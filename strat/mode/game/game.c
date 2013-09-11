@@ -46,7 +46,7 @@ mode game_start (strat_ctx ctx)
 
    unit_types_load (ctx, &game->unit_types);
 
-   map_init (ctx, &game->map, game->unit_types, game->tiles, "grass");
+   map_init (ctx, &game->map, game->unit_types, "grass");
 
    list_each_elem (game->map.units, unit)
    {

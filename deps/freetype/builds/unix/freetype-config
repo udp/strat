@@ -16,7 +16,7 @@ includedir=${prefix}/include
 libdir=${exec_prefix}/lib
 enable_shared=
 wl=-Wl,
-hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+hardcode_libdir_flag_spec=''
 
 usage()
 {
@@ -144,7 +144,7 @@ if test "$echo_libs" = "yes" ; then
   if test "$enable_shared" = "yes" ; then
     eval "rpath=\"$hardcode_libdir_flag_spec\""
   fi
-  libs="-lfreetype -lz  "
+  libs="-lfreetype -lz -lbz2 "
   if test "${SYSROOT}$libdir" != "/usr/lib" && test "${SYSROOT}$libdir" != "/usr/lib64"; then
     echo -L${SYSROOT}$libdir $libs
   else

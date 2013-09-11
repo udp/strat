@@ -28,29 +28,14 @@
  * SUCH DAMAGE.
  */
 
-typedef struct _tile
+typedef struct _shader
 {
-   UT_hash_handle hh;
+    GLuint program, vertex, fragment;
 
-   struct _image image;
+} * shader;
 
-   char * name;
-
-   int flags;
-
-} * tile;
-
-bool tile_init (strat_ctx, tile, const char * name);
-void tile_load (tile);
-void tile_unload (tile);
-void tile_cleanup (tile);
-
-#define tile_flag_loaded  1
+bool shader_init (shader, const char * name);
+void shader_cleanup (shader);
 
 
-/* Load/unload a uthash map of tiles (name keyptr -> tile object)
- */
-
-bool tiles_load (strat_ctx ctx, tile * tiles);
-void tiles_unload (strat_ctx ctx, tile * tiles);
 

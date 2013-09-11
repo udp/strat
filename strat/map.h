@@ -34,23 +34,15 @@ typedef struct _map
 
    int width, height;
 
-   int tile_width, tile_height;
 
-   /* 2D array of tiles, and 2D array of elevation numbers.  Index into either
-    * array with (y * width + x).
-    */
-
-   tile * tiles;
-   int8_t * elevation;
-
-   struct _tile default_tile;
 
    list (struct _unit, units);
 
 } * map;
 
-bool map_init (strat_ctx, map,
-               unit_type unit_types, tile tiles,
+bool map_init (strat_ctx,
+               map,
+               unit_type unit_types, 
                const char * name);
 
 void map_cleanup (map);

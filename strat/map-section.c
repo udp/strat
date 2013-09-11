@@ -28,30 +28,17 @@
  * SUCH DAMAGE.
  */
 
-#include "toolbar.h"
+#include "common.h"
 
-#define editor_state_hovering  1
-
-typedef struct _mode_editor
+void map_section_update (map_section section)
 {
-   struct _mode mode;
+    Vec2f * vertices = (Vec2f *) alloca (map_section_size * map_section_size);
 
-   unit_type unit_types;
 
-   struct _map map;
 
-   struct _camera camera;
 
-   struct _editor_toolbar toolbar;
 
-   vec2f map_hover;
-   struct _image image_tile_hover;
+}
 
-   int state;
-
-} * mode_editor;
-
-mode editor_start (strat_ctx);
-void editor_end (strat_ctx, mode mode);
 
 

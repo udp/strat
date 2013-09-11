@@ -33,7 +33,6 @@
 bool map_init (strat_ctx ctx,
                map map,
                unit_type unit_types,
-               tile tiles,
                const char * name)
 {
    char filename [strat_max_path];
@@ -47,70 +46,6 @@ bool map_init (strat_ctx ctx,
 
    map->width = sut_json_int (map->json, "width", 4);
    map->height = sut_json_int (map->json, "height", 4);
-
-
-   /** Tiles **/
-
-   map->tiles = (tile *) malloc (sizeof (tile) * map->width * map->height);
-   map->elevation = (int8_t *) malloc (sizeof (int8_t) * map->width * map->height);
-
-   if (!tile_init (ctx, &map->default_tile, sut_json_string (map->json, "defaultTile", "empty")))
-   {
-      trace ("Error loading default tile for map %s", name);
-      return false;
-   }
-
-   map->tile_width = map->default_tile.image.width;
-   map->tile_height = map->default_tile.image.height;
-
-   json_value * tiles_json = sut_json_value (map->json, "tiles");
-
-   if (tiles_json->type != json_array)
-      tiles_json = 0;
-
-   for (long y = 0; y < map->height; ++ y)
-   {
-      json_value * row_json = tiles_json ? tiles_json->u.array.values [y] : 0;
-
-      if (row_json->type != json_array)
-         row_json = 0;
-
-      for (long x = 0; x < map->width; ++ x)
-      {
-         tile tile = 0;
-         int8_t elevation = 0;
-
-         if (row_json && row_json->u.array.length > x)
-         {
-            json_value * tile_json = row_json->u.array.values [x];
-
-            if (tile_json->type == json_string)
-            {
-               const char * elevation_str = strchr (tile_json->u.string.ptr, ':');
-
-               size_t name_length;
-              
-               if (elevation_str)
-               {
-                  name_length = (elevation_str - tile_json->u.string.ptr);
-                  elevation = atoi (elevation_str + 1);
-               }
-               else
-               {
-                  name_length = tile_json->u.string.length;
-               }
-
-               HASH_FIND (hh, tiles, tile_json->u.string.ptr, name_length, tile);
-            }
-         }
-         
-         if (!tile)
-            tile = &map->default_tile;
-
-         map->tiles [y * map->width + x] = tile;
-         map->elevation [y * map->width + x] = elevation;
-      }
-   }
 
 
    /** Units **/
@@ -131,32 +66,16 @@ bool map_init (strat_ctx ctx,
       trace ("Map %s has no units?", name);
    }
 
-   trace ("Loaded map %s (tile width = %d, tile height = %d)",
-             name, map->tile_width, map->tile_height);
+   trace ("Loaded map %s", name);
 
    return map;
 }
 
 void map_cleanup (map map)
 {
-   tile_cleanup (&map->default_tile);
 }
 
 void map_draw (strat_ctx ctx, camera camera, map map)
 {
-   int num_drawn = 0;
-
-   for (int i = 0; i < map->height; ++ i)
-   {
-      for (int j = map->width - 1; j >= 0; -- j)
-      {
-         tile tile = map->tiles [i * map->width + j];
-         int8_t elevation = map->elevation [i * map->width + j];
-
-         vec2f p = mapspace_to_screenspace (camera, i, j);
-		  
-         image_draw (&tile->image, p.x, p.y);
-      }
-   }
 }
 

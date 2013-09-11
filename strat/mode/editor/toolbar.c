@@ -52,28 +52,6 @@ void editor_toolbar_draw (strat_ctx ctx, editor_toolbar toolbar)
    char status [128];
    *status = 0;
 
-   /* Hovering over a tile?  Set status to the coordinates and tile type. */
-
-   if (editor->state & editor_state_hovering)
-   {
-      int x = (int) editor->map_hover.x;
-      int y = (int) editor->map_hover.y;
-
-      tile tile = editor->map.tiles [y * editor->map.width + x];
-      int elevation = editor->map.elevation [y * editor->map.width + x];
-
-      char elevation_str [128];
-      *elevation_str = 0;
-
-      if (elevation > 0)
-         sprintf (elevation_str, " (elevation %d up)", abs (elevation));
-      else if (elevation < 0)
-         sprintf (elevation_str, " (elevation %d down)", abs (elevation));
-
-      sprintf (status, "Tile (%d, %d): %s%s", x, y, tile->name, elevation_str);
-
-   }
-
    if (*status)
       text_draw (&toolbar->font, 0, 0, 128, 64, status, 0);
 }

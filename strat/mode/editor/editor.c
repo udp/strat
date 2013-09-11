@@ -46,9 +46,8 @@ mode editor_start (strat_ctx ctx)
    editor->image_tile_hover.offset_x = (editor->image_tile_hover.width / 2);
 
    unit_types_load (ctx, &editor->unit_types);
-   tiles_load (ctx, &editor->tiles);
 
-   map_init (ctx, &editor->map, editor->unit_types, editor->tiles, "grass");
+   map_init (ctx, &editor->map, editor->unit_types, "grass");
    camera_center (ctx, &editor->camera, 0, 0);
 
    editor_toolbar_init (ctx, &editor->toolbar);
@@ -63,7 +62,6 @@ void cleanup (strat_ctx ctx, mode mode)
    editor_toolbar_cleanup (ctx, &editor->toolbar);
 
    unit_types_unload (ctx, &editor->unit_types);
-   tiles_unload (ctx, &editor->tiles);
 
    free (editor);
 }

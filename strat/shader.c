@@ -30,86 +30,69 @@
 
 #include "common.h"
 
-bool tile_init (strat_ctx ctx, tile tile, const char * name)
+bool shader_init (shader shader, const char * name)
 {
-   if (! (tile->name = strdup (name)))
-      return false;
+    if ((shader->program = glCreateProgram ()) == 0)
+    {
+        trace ("Error creating shader program for %s", name); 
+        return false;
+    }
 
-   char filename [strat_max_path];
-   snprintf (filename, sizeof (filename), "game/tile/%s.png", name);
+    char filename [strat_max_path];
 
-   if (!image_init (&tile->image, filename))
-      return false;
+    /* Vertex shader
+     */
+    sprintf (filename, "shader/%s.vsh", name);
 
-   tile->image.offset_x = (tile->image.width / 2);
+    char * vertex_source;
 
-   return true;
+    if (!sut_load_file (filename, &vertex_source, NULL))
+    {
+        trace ("Error loading vertex shader: %s", filename);
+        return false;
+    }
+
+    if ((shader->vertex = glCreateShader (GL_VERTEX_SHADER)) == 0)
+    {
+        trace ("Error creating vertex shader: %s", name);
+        return false;
+    }
+
+    glShaderSource (shader->vertex, 1, (const char **) &vertex_source, NULL);
+    glCompileShader (shader->vertex);
+
+    free (vertex_source);
+
+    /* Fragment shader
+     */
+    sprintf (filename, "shader/%s.fsh", name);
+
+    char * fragment_source;
+
+    if (!sut_load_file (filename, &fragment_source, NULL))
+    {
+        trace ("Error loading fragment shader: %s", filename);
+        return false;
+    }
+
+    if ((shader->fragment = glCreateShader (GL_FRAGMENT_SHADER)) == 0)
+    {
+        trace ("Error creating fragment shader: %s", name);
+        return false;
+    }
+
+    glShaderSource (shader->fragment, 1, (const char **) &fragment_source, NULL);
+    glCompileShader (shader->fragment);
+
+    free (fragment_source);
+
+    return true;
 }
 
-void tile_cleanup (tile tile)
+void shader_cleanup (shader shader)
 {
-   image_cleanup (&tile->image);
 
-   free (tile->name);
 }
 
-bool tiles_load (strat_ctx ctx, tile * tiles)
-{
-   DIR * tile_dir = opendir ("game/tile");
-
-   if (!tile_dir)
-   {
-      trace ("Couldn't open tile dir");
-      return false;
-   }
-
-   struct dirent * entry;
-
-   while ((entry = readdir (tile_dir)))
-   {
-      if (entry->d_type != DT_REG)
-         continue;
-
-      if (*entry->d_name == '.')
-         continue;
-
-
-      /* Remove file extension */
-
-      char * ext = entry->d_name;
-
-      while (*ext != '.' && *ext != '\0')
-         ++ ext;
-
-      *ext = 0;
-      
-
-      tile tile = malloc (sizeof (*tile));
-      tile_init (ctx, tile, entry->d_name);
-
-      HASH_ADD_KEYPTR (hh,
-                       *tiles,
-                       tile->name,
-                       strlen (tile->name),
-                       tile);
-   }
-
-   closedir (tile_dir);
-
-   return true;
-}
-
-void tiles_unload (strat_ctx ctx, tile * tiles)
-{
-   tile tile, tmp;
-
-   HASH_ITER (hh, (*tiles), tile, tmp)
-   {
-      HASH_DEL (*tiles, tile);
-
-      tile_cleanup (tile);
-      free (tile);
-   }
-}
 
 

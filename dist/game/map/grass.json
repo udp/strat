@@ -1,6 +1,6 @@
 {
-    "width": 4,
-    "height": 4,
+    "width": 128,
+    "height": 128,
 
     "units":
     [
@@ -8,14 +8,6 @@
           "x": 0,
           "y": 0
         }
-    ],
-
-    "tiles":
-    [
-        ["grass-aoe",    "grass-aoe",      "grass-aoe",    "grass-aoe"],
-        ["grass-aoe",    "grass-aoe:-1",   "grass-aoe",    "grass-aoe"],
-        ["grass-aoe",    "grass-aoe",      "grass-aoe",    "grass-aoe"],
-        ["grass-aoe",    "grass-aoe",      "grass-aoe",    "grass-aoe"]
     ]
 }
 

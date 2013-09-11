@@ -28,30 +28,37 @@
  * SUCH DAMAGE.
  */
 
-#include "toolbar.h"
 
-#define editor_state_hovering  1
-
-typedef struct _mode_editor
+typedef struct _map_cell
 {
-   struct _mode mode;
+   int8_t elevation;
 
-   unit_type unit_types;
+   int8_t textureA,
+          textureB,
+          textureC;
 
-   struct _map map;
+   int8_t textureA_opacity,
+          textureB_opacity,
+          textureC_opacity;
 
-   struct _camera camera;
+} * map_cell;
 
-   struct _editor_toolbar toolbar;
 
-   vec2f map_hover;
-   struct _image image_tile_hover;
+#define map_section_size 256
 
-   int state;
+typedef struct _map_section
+{
+   /* The meta texture stores, for each cell:
+    *
+    *   R - textureA
+    *   G - textureB
+    *   B - textureC
+    *   A - elevation
+    */
 
-} * mode_editor;
+   GLint texID_meta;
 
-mode editor_start (strat_ctx);
-void editor_end (strat_ctx, mode mode);
+} * map_section;
 
+void map_section_update (map_section);
 

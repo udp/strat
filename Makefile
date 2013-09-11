@@ -31,9 +31,9 @@ build/json.o \
 build/list.o \
 build/strat.o \
 build/util.o \
-build/tile.o \
 build/map.o \
 build/image.o \
+build/shader.o \
 build/font.o \
 build/unit-type.o \
 build/unit.o \
@@ -79,14 +79,14 @@ build/strat.o: strat/strat.c
 build/util.o: strat/util.c
 	$(CC) $(CFLAGS) strat/util.c -c -o $@
 
-build/tile.o: strat/tile.c
-	$(CC) $(CFLAGS) strat/tile.c -c -o $@
-
 build/map.o: strat/map.c
 	$(CC) $(CFLAGS) strat/map.c -c -o $@
 
 build/image.o: strat/image.c
 	$(CC) $(CFLAGS) strat/image.c -c -o $@
+
+build/shader.o: strat/shader.c
+	$(CC) $(CFLAGS) strat/shader.c -c -o $@
 
 build/font.o: strat/font.c
 	$(CC) $(CFLAGS) strat/font.c -c -o $@

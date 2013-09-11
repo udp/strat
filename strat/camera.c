@@ -121,7 +121,7 @@ void camera_tick (strat_ctx ctx, map map, camera camera)
 	
 	
 	//Update camera matrix
-	float scale = map->tile_width / sqrt(2);
+	float scale = 32 / sqrt(2);
 	mat3f mat = mat3fMakeRotate(M_PI/4);
 	mat = mat3fScale(mat, scale, scale/2);
 	mat = mat3fTranslate(mat, -camera->pos.x, -camera->pos.y);

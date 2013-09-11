@@ -65,7 +65,7 @@ typedef struct _camera * camera;
 
 #include "util.h"
 #include "image.h"
-#include "tile.h"
+#include "shader.h"
 #include "font.h"
 #include "unit-type.h"
 #include "unit.h"
@@ -96,6 +96,12 @@ struct _strat_ctx
    mode mode;
 
    bool is_editor;
+
+   struct
+   {
+      struct _shader ui;
+
+   } shader;
 };
 
 strat_ctx strat_init (int argc, char * argv []);
